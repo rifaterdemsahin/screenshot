@@ -73,3 +73,36 @@ The `open_paintnet_screenshot.ps1` script is a PowerShell script designed to aut
 *   If Paint.NET is not found at the default path, you may need to edit the `$paintNetPath` variable within `open_paintnet_screenshot.ps1`.
 *   The script will attempt to open `screenshot_monitor1.png` through `screenshot_monitor5.png`. If a specific monitor screenshot is not found (e.g., if you have fewer than 5 monitors or the file was not captured), it will be skipped.
 *   The script does not explicitly control which monitor Paint.NET opens on. Paint.NET typically opens on the primary monitor or where it was last opened.
+
+---
+
+## How to Open Clipboard Image in Paint.NET
+
+The `open_paintnet_clipboard.ps1` script is a PowerShell script designed to check if the clipboard contains an image, save it temporarily, and then open that temporary image in Paint.NET.
+
+### Prerequisites
+
+*   Windows Operating System
+*   PowerShell 5.1 or later
+*   Paint.NET installed (default path assumed: `C:\Program Files\Paint.NET\PaintDotNet.exe`)
+*   An image copied to the clipboard.
+
+### Execution Steps
+
+1.  **Open PowerShell:** Open a PowerShell terminal.
+
+2.  **Navigate to the Script Directory:**
+    ```powershell
+    Set-Location -Path "C:\projects\screenshot\5_Symbols"
+    ```
+
+3.  **Run the Script:**
+    ```powershell
+    powershell -ExecutionPolicy Bypass -File .\open_paintnet_clipboard.ps1
+    ```
+
+### Notes
+
+*   If Paint.NET is not found at the default path, you may need to edit the `$paintNetPath` variable within `open_paintnet_clipboard.ps1`.
+*   The script requires an image to be present in the clipboard to function.
+*   Temporary files are created in `%TEMP%\PaintNetClipboard` and are not automatically deleted by the script.
