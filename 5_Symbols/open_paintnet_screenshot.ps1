@@ -19,21 +19,24 @@ if (-not $latestScreenshotDir) {
     exit 1
 }
 
-# Construct the path to screenshot_monitor1.png
-$monitor1ScreenshotPath = Join-Path $latestScreenshotDir.FullName "screenshot_monitor1.png"
+Write-Host "Attempting to open the last 5 monitor screenshots in Paint.NET..." -ForegroundColor Green
 
-# Check if the screenshot for monitor 1 exists
-if (-not (Test-Path $monitor1ScreenshotPath)) {
-    Write-Host "Error: 'screenshot_monitor1.png' not found in the latest capture directory '$latestScreenshotDir.FullName'." -ForegroundColor Red
-    exit 1
+$foundAny = $false
+for ($i = 1; $i -le 5; $i++) {
+    $monitorScreenshotFileName = "screenshot_monitor$($i).png"
+    $monitorScreenshotPath = Join-Path $latestScreenshotDir.FullName $monitorScreenshotFileName
+
+    if (Test-Path $monitorScreenshotPath) {
+        Write-Host "Opening '$monitorScreenshotPath'..." -ForegroundColor Green
+        Start-Process -FilePath $paintNetPath -ArgumentList "`"$monitorScreenshotPath`""
+        $foundAny = $true
+    } else {
+        Write-Host "Info: '$monitorScreenshotFileName' not found. Skipping." -ForegroundColor Yellow
+    }
 }
 
-Write-Host "Opening '$monitor1ScreenshotPath' in Paint.NET..." -ForegroundColor Green
-
-# Open the screenshot in Paint.NET
-# Note: Directly controlling which monitor Paint.NET opens on is complex
-# and often depends on Paint.NET's internal settings or last opened position.
-# This command will simply open the file with Paint.NET.
-Start-Process -FilePath $paintNetPath -ArgumentList "`"$monitor1ScreenshotPath`""
+if (-not $foundAny) {
+    Write-Host "Warning: No monitor screenshots (1-5) were found to open." -ForegroundColor Yellow
+}
 
 Write-Host "Script completed." -ForegroundColor Cyan

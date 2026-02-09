@@ -43,9 +43,9 @@ The script will:
 
 ---
 
-## How to Open Latest Screenshot in Paint.NET
+## How to Open Latest Screenshots in Paint.NET
 
-The `open_paintnet_screenshot.ps1` script is a PowerShell script designed to automatically find the most recently captured `screenshot_monitor1.png` and open it using Paint.NET.
+The `open_paintnet_screenshot.ps1` script is a PowerShell script designed to automatically find the most recently captured set of monitor screenshots and open up to the first 5 individual `screenshot_monitorN.png` files (where N is from 1 to 5) using Paint.NET.
 
 ### Prerequisites
 
@@ -70,5 +70,5 @@ The `open_paintnet_screenshot.ps1` script is a PowerShell script designed to aut
 ### Notes
 
 *   If Paint.NET is not found at the default path, you may need to edit the `$paintNetPath` variable within `open_paintnet_screenshot.ps1`.
-*   The script attempts to open `screenshot_monitor1.png`. If you wish to open a different monitor's screenshot, you will need to manually edit the script to change `"screenshot_monitor1.png"` to, for example, `"screenshot_monitor2.png"`.
+*   The script will attempt to open `screenshot_monitor1.png` through `screenshot_monitor5.png`. If a specific monitor screenshot is not found (e.g., if you have fewer than 5 monitors or the file was not captured), it will be skipped.
 *   The script does not explicitly control which monitor Paint.NET opens on. Paint.NET typically opens on the primary monitor or where it was last opened.
