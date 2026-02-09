@@ -33,14 +33,15 @@ if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
     Write-Host "Opening '$tempFilePath' in Paint.NET..." -ForegroundColor Green
 
     # Open the temporary image in Paint.NET
-    Start-Process -FilePath $paintNetPath -ArgumentList "`"$tempFilePath`""
+    $process = Start-Process -FilePath $paintNetPath -ArgumentList "`"$tempFilePath`"" -PassThru
+    # Give Paint.NET some time to open and load the image
+    Start-Sleep -Seconds 2 # Adjust this delay as needed
 
-    # Optionally, you might want to delete the temporary file after Paint.NET is opened.
-    # However, Paint.NET might hold a lock on the file.
-    # For simplicity, we'll leave it for now or delete it after a short delay.
-    # A more robust solution might involve monitoring the Paint.NET process.
-    # For now, files in TEMP are typically cleaned up by the system over time.
-    # You could add a 'Remove-Item $tempFilePath -Force' here if you're sure Paint.NET won't lock it.
+    # Send keystrokes: '4', '0', and '['
+    # '{LEFTBRACKET}' is the SendKeys code for the '[' character.
+    # Note: SendKeys can be unreliable and depends on Paint.NET being the active window and ready to receive input.
+    Write-Host "Sending keystrokes '4', '0', '[' to Paint.NET..." -ForegroundColor DarkYellow
+    [System.Windows.Forms.SendKeys]::SendWait("40{LEFTBRACKET}")
 
 } else {
     Write-Host "Error: Clipboard does not contain an image." -ForegroundColor Red

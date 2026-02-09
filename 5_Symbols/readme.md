@@ -80,6 +80,10 @@ The `open_paintnet_screenshot.ps1` script is a PowerShell script designed to aut
 
 The `open_paintnet_clipboard.ps1` script is a PowerShell script designed to check if the clipboard contains an image, save it temporarily, and then open that temporary image in Paint.NET.
 
+### Functionality
+
+Upon opening the image, the script will attempt to send the keystrokes '4', '0', and '[' to Paint.NET. These keystrokes are typically used to adjust brush size and potentially select a tool.
+
 ### Prerequisites
 
 *   Windows Operating System
@@ -103,6 +107,7 @@ The `open_paintnet_clipboard.ps1` script is a PowerShell script designed to chec
 
 ### Notes
 
+*   **Reliability:** Sending keystrokes to an external application can be unreliable. The script includes a short delay to allow Paint.NET to load, but there's no guarantee Paint.NET will be fully ready or the active window when the keystrokes are sent.
 *   If Paint.NET is not found at the default path, you may need to edit the `$paintNetPath` variable within `open_paintnet_clipboard.ps1`.
 *   The script requires an image to be present in the clipboard to function.
 *   Temporary files are created in `%TEMP%\PaintNetClipboard` and are not automatically deleted by the script.
