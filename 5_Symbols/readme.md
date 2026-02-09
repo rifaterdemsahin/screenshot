@@ -117,9 +117,9 @@ Upon opening the image, the script will attempt to send the keystrokes ']' (40 t
 
 ---
 
-## How to Capture Screenshot and Open in Paint.NET
+## How to Capture Selection and Open in Paint.NET
 
-The `screenshot_and_edit.ps1` script orchestrates the screenshot capture and subsequent opening of the captured image in Paint.NET. It first runs `capture.ps1` to take screenshots and copy the last one to the clipboard, then waits for a specified duration, and finally executes `open_paintnet_clipboard.ps1` to open the clipboard image in Paint.NET.
+The `screenshot_and_edit.ps1` script orchestrates capturing a screen selection and subsequent opening of that selection in Paint.NET. It first triggers the Windows Snipping Tool shortcut (`Win + Shift + S`), waits for the user to make a selection (which places an image on the clipboard), and then executes `open_paintnet_clipboard.ps1` to open the clipboard image in Paint.NET.
 
 ### Prerequisites
 
@@ -143,6 +143,7 @@ The `screenshot_and_edit.ps1` script orchestrates the screenshot capture and sub
 
 ### Notes
 
-*   This script is a convenience wrapper around `capture.ps1` and `open_paintnet_clipboard.ps1`. Ensure those scripts are correctly configured and functional.
-*   The script includes a 10-second delay between capturing and opening the image in Paint.NET to allow time for preparation.
-*   **Reliability:** The keystroke sending functionality within `open_paintnet_clipboard.ps1` remains subject to the same reliability concerns as documented in its own section.
+*   This script now relies on the user making a screen selection after `Win + Shift + S` is triggered.
+*   The script waits for a maximum of 30 seconds for an image to appear in the clipboard. If no selection is made within this time, Paint.NET will not be opened.
+*   **Reliability:** Triggering `Win + Shift + S` programmatically can sometimes be unreliable. Also, the keystroke sending functionality within `open_paintnet_clipboard.ps1` remains subject to the same reliability concerns as documented in its own section.
+*   The `capture.ps1` script (for full screen captures) is no longer called by this orchestration script.
