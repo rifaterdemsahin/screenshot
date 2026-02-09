@@ -1,25 +1,20 @@
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
-using System.Drawing; // Added for ImageFormat
-
+using System.Drawing;
 public class Keyboard
 {
     [DllImport("user32.dll")]
     public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
-
     public const byte VK_LWIN = 0x5B; // Left Windows key
     public const byte VK_SHIFT = 0x10; // Shift key
     public const byte VK_S = 0x53; // 'S' key
-
     public const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
     public const uint KEYEVENTF_KEYUP = 0x0002;
-
     public static void PressKey(byte keyCode)
     {
         keybd_event(keyCode, 0, 0, UIntPtr.Zero); // Key down
     }
-
     public static void ReleaseKey(byte keyCode)
     {
         keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero); // Key up
@@ -68,7 +63,6 @@ Write-Host "Waiting for an image to appear in the clipboard (max 30 seconds)..."
 $clipboardTimeout = 30 # seconds
 $sleepInterval = 0.5 # seconds
 $timeWaited = 0
-
 $imageInClipboard = $false
 
 while ($timeWaited -lt $clipboardTimeout) {
@@ -82,27 +76,45 @@ while ($timeWaited -lt $clipboardTimeout) {
 
 if ($imageInClipboard) {
     Write-Host "Image detected in clipboard. Saving to temporary file and opening in Paint.NET..." -ForegroundColor Green
-
+    
     $image = [System.Windows.Forms.Clipboard]::GetImage()
-
+    
     # Generate a unique temporary filename
     $tempFileName = "clipboard_image_$(Get-Date -Format 'yyyyMMddHHmmssfff').png"
     $tempFilePath = Join-Path $tempDir $tempFileName
-
+    
     $image.Save($tempFilePath, [System.Drawing.Imaging.ImageFormat]::Png)
     $image.Dispose() # Dispose of the image object
-
+    
     Write-Host "Temporary image saved to '$tempFilePath'." -ForegroundColor DarkGreen
-
+    
     # Open the temporary image in Paint.NET
     $process = Start-Process -FilePath $paintNetPath -ArgumentList "`"$tempFilePath`"" -PassThru
+    
     # Give Paint.NET some time to open and load the image
-    Start-Sleep -Seconds 2 # Adjust this delay as needed
-
+    Start-Sleep -Seconds 3
+    
     # Send keystrokes: ']' 40 times, then 'X', and 'D'
-    Write-Host "Sending keystrokes '] 40 times', 'X', 'D' to Paint.NET..." -ForegroundColor DarkYellow
-    [System.Windows.Forms.SendKeys]::SendWait("{] 40}XD")
-
+    Write-Host "Sending keystrokes to Paint.NET..." -ForegroundColor DarkYellow
+    Write-Host "  - Pressing ']' 40 times" -ForegroundColor DarkYellow
+    Write-Host "  - Pressing 'X'" -ForegroundColor DarkYellow
+    Write-Host "  - Pressing 'D'" -ForegroundColor DarkYellow
+    
+    # Send ']' key 40 times
+    for ($i = 0; $i -lt 40; $i++) {
+        [System.Windows.Forms.SendKeys]::SendWait("]")
+        Start-Sleep -Milliseconds 50 # Small delay between key presses
+    }
+    
+    # Send 'X' key
+    [System.Windows.Forms.SendKeys]::SendWait("X")
+    Start-Sleep -Milliseconds 100
+    
+    # Send 'D' key
+    [System.Windows.Forms.SendKeys]::SendWait("D")
+    
+    Write-Host "Keystrokes sent successfully." -ForegroundColor Green
+    
 } else {
     Write-Host "Timeout: No image detected in clipboard after $clipboardTimeout seconds. Paint.NET will not be opened." -ForegroundColor Red
 }
