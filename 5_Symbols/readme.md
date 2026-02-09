@@ -34,6 +34,7 @@ The `capture.ps1` script is a PowerShell script designed to capture screenshots 
     ```powershell
     .\capture.ps1
     ```
+*   **Console Closure:** The PowerShell console window will close automatically once the script completes execution.
 
 ### Output
 
@@ -67,6 +68,7 @@ The `open_paintnet_screenshot.ps1` script is a PowerShell script designed to aut
     ```powershell
     powershell -ExecutionPolicy Bypass -File .\open_paintnet_screenshot.ps1
     ```
+*   **Console Closure:** The PowerShell console window will close automatically once the script completes execution.
 
 ### Notes
 
@@ -102,6 +104,7 @@ The `screenshot_and_edit.ps1` script orchestrates capturing a screen selection a
     ```powershell
     powershell -ExecutionPolicy Bypass -File .\screenshot_and_edit.ps1
     ```
+*   **Console Closure:** The PowerShell console window will close automatically once the script completes execution.
 
 ### Notes
 

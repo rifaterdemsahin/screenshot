@@ -60,7 +60,7 @@ for ($i = 0; $i -lt $screens.Count; $i++) {
     $bmp.Save("$dir\screenshot_monitor$($i+1).png")
     # Copy individual screenshot to clipboard
     [System.Windows.Forms.Clipboard]::SetImage($bmp)
-    Write-Host "Monitor $($i+1) screenshot copied to clipboard." -ForegroundColor DarkGreen
+    Write-Host "Monitor $($i+1): screenshot_monitor$($i+1).png" -ForegroundColor DarkGreen
     $gfx.Dispose()
     $bmp.Dispose()
     Write-Host "OK - Monitor $($i+1): screenshot_monitor$($i+1).png" -ForegroundColor Green
@@ -69,3 +69,4 @@ for ($i = 0; $i -lt $screens.Count; $i++) {
 Write-Host ""
 Write-Host "All screenshots saved to: $dir" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
+exit

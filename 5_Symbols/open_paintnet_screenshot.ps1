@@ -40,3 +40,4 @@ if (-not $foundAny) {
 }
 
 Write-Host "Script completed." -ForegroundColor Cyan
+exit

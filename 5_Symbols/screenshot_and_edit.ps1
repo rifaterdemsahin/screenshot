@@ -108,3 +108,4 @@ if ($imageInClipboard) {
 }
 
 Write-Host "Orchestration script completed." -ForegroundColor Cyan
+exit
