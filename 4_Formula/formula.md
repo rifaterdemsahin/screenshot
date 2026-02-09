@@ -1,68 +1,29 @@
-Here's the updated script that creates a timestamped folder and saves all screenshots inside:
+# 📚 4_Formula: Guides & Best practices
 
-```powershell
-$code = @'
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
+## PowerShell Screenshot Scripts
 
-$timestamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
-$baseDir = 'C:\projects\screenshots'
-$dir = Join-Path $baseDir $timestamp
+This project contains several PowerShell scripts located in the `5_Symbols` folder for capturing and handling screenshots:
 
-# Create timestamped directory
-New-Item -ItemType Directory -Path $dir -Force | Out-Null
+*   **`capture.ps1`**: Captures screenshots of all monitors, both combined and individually. It saves them to a timestamped folder in `3_UI/CapturedScreenshots` and copies each capture to the clipboard.
+*   **`open_paintnet_screenshot.ps1`**: Opens the last 5 captured monitor screenshots in Paint.NET.
+*   **`open_paintnet_clipboard.ps1`**: Opens the current image from the clipboard in Paint.NET.
 
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "Multi-Monitor Screenshot Capture" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host ""
-Write-Host "Saving to: $dir" -ForegroundColor Yellow
-Write-Host ""
+---
 
-# Capture all monitors combined
-Write-Host "Capturing all monitors combined..." -ForegroundColor Yellow
-$left = ([System.Windows.Forms.Screen]::AllScreens | Measure-Object -Property Bounds.X -Minimum).Minimum
-$top = ([System.Windows.Forms.Screen]::AllScreens | Measure-Object -Property Bounds.Y -Minimum).Minimum
-$right = ([System.Windows.Forms.Screen]::AllScreens | Measure-Object -Property Bounds.Right -Maximum).Maximum
-$bottom = ([System.Windows.Forms.Screen]::AllScreens | Measure-Object -Property Bounds.Bottom -Maximum).Maximum
+## Limitations of Controlling GUI Image Editors
 
-$bitmap = New-Object System.Drawing.Bitmap($right - $left, $bottom - $top)
-$graphics = [System.Drawing.Graphics]::FromImage($bitmap)
-$graphics.CopyFromScreen($left, $top, 0, 0, $bitmap.Size)
-$bitmap.Save("$dir\screenshot_all.png")
-$graphics.Dispose()
-$bitmap.Dispose()
-Write-Host "OK - All monitors: screenshot_all.png" -ForegroundColor Green
+### The Challenge
 
-Write-Host ""
-Write-Host "Capturing individual monitors..." -ForegroundColor Yellow
+When automating workflows that involve image editors, it is often desirable to launch the editor with specific settings pre-configured (e.g., a certain brush, color, or tool selected).
 
-# Capture each monitor separately
-$screens = [System.Windows.Forms.Screen]::AllScreens
-for ($i = 0; $i -lt $screens.Count; $i++) {
-    $screen = $screens[$i]
-    $bmp = New-Object System.Drawing.Bitmap($screen.Bounds.Width, $screen.Bounds.Height)
-    $gfx = [System.Drawing.Graphics]::FromImage($bmp)
-    $gfx.CopyFromScreen($screen.Bounds.Location, [System.Drawing.Point]::Empty, $screen.Bounds.Size)
-    $bmp.Save("$dir\screenshot_monitor$($i+1).png")
-    $gfx.Dispose()
-    $bmp.Dispose()
-    Write-Host "OK - Monitor $($i+1): screenshot_monitor$($i+1).png" -ForegroundColor Green
-}
+### Research Findings
 
-Write-Host ""
-Write-Host "All screenshots saved to: $dir" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-'@
+Research into popular desktop and online image editors has shown that this is generally **not possible** through simple scripting or command-line arguments.
 
-$code | Out-File "C:\projects\screenshots\capture.ps1" -Encoding utf8 -Force
-Write-Host "Script ready. Run: powershell -ExecutionPolicy Bypass -File 'C:\projects\screenshots\capture.ps1'"
-```
+*   **Desktop Applications (e.g., Paint.NET, GIMP, Photoshop, Krita):** Their command-line interfaces are designed for file-level operations (like opening, converting, or printing) and automated batch processing, not for controlling the interactive state of the GUI. Settings like brush size, color, and selected tool are meant to be controlled by the user *within* the application.
 
-Now run:
+*   **Online Editors (e.g., Photopea, Pixlr):** Similarly, these web applications do not expose their internal state, such as tool settings, through URL parameters.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File "C:\projects\screenshots\capture.ps1"
-```
+### Conclusion
 
-It will create a folder like `C:\projects\screenshots\2026-02-09_06-15-30\` with all screenshots inside.
+Directly launching a graphical image editor with pre-configured interactive tools (like a specific brush and color) is not a feasible goal for simple scripting. More complex solutions, such as fragile UI automation (simulating mouse clicks and keystrokes), would be required, and are not recommended for reliable automation.
