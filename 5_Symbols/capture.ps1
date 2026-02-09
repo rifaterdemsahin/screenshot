@@ -39,6 +39,9 @@ if ($totalWidth -le 0 -or $totalHeight -le 0) {
     # The CopyFromScreen source coordinates are relative to the top-left of the virtual screen
     $graphics.CopyFromScreen($minX, $minY, 0, 0, $bitmap.Size)
     $bitmap.Save("$dir\screenshot_all.png")
+    # Copy combined screenshot to clipboard
+    [System.Windows.Forms.Clipboard]::SetImage($bitmap)
+    Write-Host "Combined screenshot copied to clipboard." -ForegroundColor DarkGreen
     $graphics.Dispose()
     $bitmap.Dispose()
     Write-Host "OK - All monitors: screenshot_all.png" -ForegroundColor Green
@@ -55,6 +58,9 @@ for ($i = 0; $i -lt $screens.Count; $i++) {
     $gfx = [System.Drawing.Graphics]::FromImage($bmp)
     $gfx.CopyFromScreen($screen.Bounds.Location, [System.Drawing.Point]::Empty, $screen.Bounds.Size)
     $bmp.Save("$dir\screenshot_monitor$($i+1).png")
+    # Copy individual screenshot to clipboard
+    [System.Windows.Forms.Clipboard]::SetImage($bmp)
+    Write-Host "Monitor $($i+1) screenshot copied to clipboard." -ForegroundColor DarkGreen
     $gfx.Dispose()
     $bmp.Dispose()
     Write-Host "OK - Monitor $($i+1): screenshot_monitor$($i+1).png" -ForegroundColor Green
