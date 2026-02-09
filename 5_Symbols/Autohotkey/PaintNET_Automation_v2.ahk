@@ -16,7 +16,7 @@ if (!DirExist(TEMP_DIR)) {
 
 ; Verify Paint.NET installation
 if (!FileExist(PAINTNET_PATH)) {
-    MsgBox(16, "Error", "Paint.NET not found at:`n" . PAINTNET_PATH)
+    MsgBox("Paint.NET not found at:`n" . PAINTNET_PATH, "Error", 16)
     ExitApp(1)
 }
 
@@ -26,7 +26,7 @@ TriggerScreenCapture()
 
 ShowStatus("Step 2: Waiting for Clipboard", "Waiting for image (max 30 seconds)...")
 if (!WaitForClipboardImage(CLIPBOARD_TIMEOUT)) {
-    MsgBox(48, "Timeout", "No image detected in clipboard after 30 seconds.")
+    MsgBox("No image detected in clipboard after 30 seconds.", "Timeout", 48)
     ExitApp(1)
 }
 
@@ -37,12 +37,12 @@ try {
     psScript := "powershell -NoProfile -Command `"Add-Type -AssemblyName System.Drawing; $img = Get-Clipboard -Format Image; if ($img) { $img.Save('" . TempFilePath . "', [System.Drawing.Imaging.ImageFormat]::Png) }`""
     RunWait(psScript,, "Hide")
 } catch {
-    MsgBox(16, "Error", "Failed to save image from clipboard!")
+    MsgBox("Failed to save image from clipboard!", "Error", 16)
     ExitApp(1)
 }
 
 if (!FileExist(TempFilePath)) {
-    MsgBox(16, "Error", "Saved image file not found: " . TempFilePath)
+    MsgBox("Saved image file not found: " . TempFilePath, "Error", 16)
     ExitApp(1)
 }
 
@@ -95,7 +95,7 @@ OpenPaintNET(paintNetPath, imagePath) {
     try {
         Run('"' . paintNetPath . '" "' . imagePath . '"')
     } catch as e {
-        MsgBox(16, "Error", "Failed to open Paint.NET:`n" . e.Message)
+        MsgBox("Failed to open Paint.NET:`n" . e.Message, "Error", 16)
         ExitApp(1)
     }
 }

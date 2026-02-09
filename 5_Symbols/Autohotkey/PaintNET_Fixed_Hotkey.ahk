@@ -22,7 +22,7 @@ if (!DirExist(TEMP_DIR)) {
 
 ; Verify Paint.NET installation
 if (!FileExist(PAINTNET_PATH)) {
-    MsgBox(16, "Paint.NET Not Found", "Paint.NET not found at:`n" . PAINTNET_PATH . "`n`nPlease install Paint.NET or update the path in the script.")
+    MsgBox("Paint.NET not found at:`n" . PAINTNET_PATH . "`n`nPlease install Paint.NET or update the path in the script.", "Paint.NET Not Found", 16)
     ExitApp(1)
 }
 
@@ -36,7 +36,7 @@ RunPaintNetAutomation() {
         ToolTip("Step 2/4: Waiting for Clipboard`nWaiting for image (max 30 seconds)...")
         if (!WaitForClipboardImage(CLIPBOARD_TIMEOUT)) {
             ToolTip()
-            MsgBox(48, "Timeout", "No image detected in clipboard after 30 seconds.")
+            MsgBox("No image detected in clipboard after 30 seconds.", "Timeout", 48)
             return
         }
         
@@ -48,13 +48,13 @@ RunPaintNetAutomation() {
             RunWait(psScript,, "Hide")
         } catch {
             ToolTip()
-            MsgBox(16, "Error", "Failed to save image from clipboard!")
+            MsgBox("Failed to save image from clipboard!", "Error", 16)
             return
         }
         
         if (!FileExist(TempFilePath)) {
             ToolTip()
-            MsgBox(16, "Error", "Saved image file not found: " . TempFilePath)
+            MsgBox("Saved image file not found: " . TempFilePath, "Error", 16)
             return
         }
 
@@ -65,14 +65,14 @@ RunPaintNetAutomation() {
         SendCustomKeystrokes()
         
         ToolTip()
-        MsgBox(64, "Success!", "Paint.NET automation completed successfully!")
+        MsgBox("Paint.NET automation completed successfully!", "Success!", 64)
 
         ; Optional: Clean up temporary file
         ; FileDelete(TempFilePath)
     }
     catch as e {
         ToolTip()
-        MsgBox(16, "Error", "An error occurred:`n" . e.Message)
+        MsgBox("An error occurred:`n" . e.Message, "Error", 16)
     }
 }
 

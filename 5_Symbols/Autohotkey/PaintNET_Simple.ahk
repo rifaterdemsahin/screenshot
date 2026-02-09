@@ -12,8 +12,8 @@ MainScript() {
 
     ; Check if Paint.NET exists
     if (!FileExist(PaintNetPath)) {
-        MsgBox(48, "Error", "Paint.NET not found at " PaintNetPath "`n"
-                           . "Please ensure Paint.NET is installed or update the 'PaintNetPath' variable in the script.")
+        MsgBox("Paint.NET not found at " PaintNetPath "`n"
+                           . "Please ensure Paint.NET is installed or update the 'PaintNetPath' variable in the script.", "Error", 48)
         return
     }
 
@@ -36,7 +36,7 @@ MainScript() {
         Sleep(500)
         if (A_Index >= 60) {
             ToolTip()
-            MsgBox(48, "Timeout", "No image in clipboard after 30 seconds!")
+            MsgBox("No image in clipboard after 30 seconds!", "Timeout", 48)
             return
         }
     }
@@ -49,13 +49,13 @@ MainScript() {
         RunWait(psScript,, "Hide")
     } catch {
         ToolTip()
-        MsgBox(16, "Error", "Failed to save image from clipboard using PowerShell!")
+        MsgBox("Failed to save image from clipboard using PowerShell!", "Error", 16)
         return
     }
     
     if (!FileExist(FilePath)) {
         ToolTip()
-        MsgBox(16, "Error", "Saved image file not found: " FilePath)
+        MsgBox("Saved image file not found: " FilePath, "Error", 16)
         return
     }
     
@@ -69,7 +69,7 @@ MainScript() {
     SendPaintNetKeystrokes()
     
     ToolTip()
-    MsgBox(64, "Complete", "Done!")
+    MsgBox("Done!", "Complete", 64)
     
     ; Clean up temporary file - this might fail if Paint.NET locks the file
     ; For robust cleanup, consider monitoring Paint.NET process or using a different temp file strategy.
