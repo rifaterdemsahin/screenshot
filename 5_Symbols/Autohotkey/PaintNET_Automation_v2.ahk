@@ -1,0 +1,106 @@
+; AutoHotkey v2.0 Script - Paint.NET Clipboard Automation (Simplified Version)
+; This script captures a screenshot, waits for clipboard, opens Paint.NET, and sends keystrokes
+
+#Requires AutoHotkey v2.0
+
+; ===== CONFIGURATION =====
+PAINTNET_PATH := "C:\Program Files\Paint.NET\PaintDotNet.exe"
+TEMP_DIR := A_Temp . "\PaintNetClipboard"
+CLIPBOARD_TIMEOUT := 30000  ; 30 seconds in milliseconds
+
+; ===== SETUP =====
+; Create temp directory
+if (!DirExist(TEMP_DIR)) {
+    DirCreate(TEMP_DIR)
+}
+
+; Verify Paint.NET installation
+if (!FileExist(PAINTNET_PATH)) {
+    MsgBox(16, "Error", "Paint.NET not found at:`n" . PAINTNET_PATH)
+    ExitApp(1)
+}
+
+; ===== MAIN EXECUTION =====
+ShowStatus("Step 1: Capturing Screenshot", "Triggering Win + Shift + S...")
+TriggerScreenCapture()
+
+ShowStatus("Step 2: Waiting for Clipboard", "Waiting for image (max 30 seconds)...")
+if (!WaitForClipboardImage(CLIPBOARD_TIMEOUT)) {
+    MsgBox(48, "Timeout", "No image detected in clipboard after 30 seconds.")
+    ExitApp(1)
+}
+
+TempFilePath := TEMP_DIR . "\clipboard_image_" . FormatTime(A_Now, "yyyyMMddHHmmssfff") . ".png"
+
+ShowStatus("Step 3: Saving Image", "Saving clipboard image to temporary file...")
+try {
+    A_Clipboard.Save(TempFilePath)
+} catch {
+    MsgBox(16, "Error", "Failed to save image from clipboard!")
+    ExitApp(1)
+}
+
+if (!FileExist(TempFilePath)) {
+    MsgBox(16, "Error", "Saved image file not found: " . TempFilePath)
+    ExitApp(1)
+}
+
+ShowStatus("Step 4: Opening Paint.NET", "Opening Paint.NET with the image...")
+OpenPaintNET(PAINTNET_PATH, TempFilePath)
+
+ShowStatus("Step 5: Sending Keystrokes", "Sending ] x40, X, D...")
+Sleep(3000)  ; Wait for Paint.NET to fully load and activate
+SendCustomKeystrokes()
+
+ShowStatus("Complete!", "All steps completed successfully!", 2000)
+ExitApp(0)
+
+; ===== FUNCTIONS =====
+
+; Display status message (using ToolTip for less interruption)
+ShowStatus(title, message, duration := 0) {
+    ToolTip(title . "`n" . message)
+    if (duration > 0) {
+        Sleep(duration)
+        ToolTip()
+    }
+}
+
+; Trigger Win + Shift + S screenshot tool
+TriggerScreenCapture() {
+    Send("#+" . "s")
+    Sleep(500)
+}
+
+; Wait for image to appear in clipboard
+WaitForClipboardImage(timeout) {
+    startTime := A_TickCount
+    
+    loop {
+        if (A_Clipboard.HasImage) {
+            return true
+        }
+        
+        if (A_TickCount - startTime >= timeout) {
+            return false
+        }
+        
+        Sleep(500)
+    }
+}
+
+; Open Paint.NET with image file
+OpenPaintNET(paintNetPath, imagePath) {
+    try {
+        Run("""" . paintNetPath . """ """ . imagePath . """")
+    } catch as e {
+        MsgBox(16, "Error", "Failed to open Paint.NET:`n" . e.Message)
+        ExitApp(1)
+    }
+}
+
+; Send the custom keystroke sequence
+SendCustomKeystrokes() {
+    ; Send ']' 40 times, then 'X', and 'D'
+    Send("{] 40}XD")
+}
