@@ -42,7 +42,8 @@ RunPaintNetAutomation() {
         
         ShowStatus("Step 3/4: Saving Image", "Saving clipboard image to temporary file...")
         try {
-            A_Clipboard.Save(TempFilePath)
+            psScript := "powershell -NoProfile -Command `"Add-Type -AssemblyName System.Drawing; $img = Get-Clipboard -Format Image; if ($img) { $img.Save('" . TempFilePath . "', [System.Drawing.Imaging.ImageFormat]::Png) }`""
+            RunWait(psScript,, "Hide")
         } catch {
             MsgBox(16, "Error", "Failed to save image from clipboard!")
             return
@@ -89,7 +90,7 @@ WaitForClipboardImage(timeout) {
     startTime := A_TickCount
     
     loop {
-        if (A_Clipboard.HasImage) {
+        if (DllCall("IsClipboardFormatAvailable", "UInt", 2)) {
             return true
         }
         

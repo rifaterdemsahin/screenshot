@@ -27,9 +27,10 @@ MainScript() {
     Sleep(1000) ; Give time for the Snipping Tool to activate
     
     ; Step 2: Wait for clipboard to contain an image
+    ; Step 2: Wait for clipboard to contain an image (Standard Bitmap Format CF_BITMAP = 2)
     ToolTip("Step 2: Waiting for image in clipboard...")
-    Loop 60 { ; Max 30 seconds (60 * 500ms)
-        if (A_Clipboard.HasImage) {
+    Loop 60 { ; Max 30 seconds
+        if (DllCall("IsClipboardFormatAvailable", "UInt", 2)) {
             break
         }
         Sleep(500)
@@ -40,13 +41,15 @@ MainScript() {
         }
     }
     
-    ; Step 3: Save image from clipboard
+    ; Step 3: Save image from clipboard using PowerShell (AHK v2 Native handling is complex without GDI+)
     ToolTip("Step 3: Saving image from clipboard...")
     try {
-        A_Clipboard.Save(FilePath)
+        ; PowerShell command to save clipboard image
+        psScript := "powershell -NoProfile -Command `"Add-Type -AssemblyName System.Drawing; $img = Get-Clipboard -Format Image; if ($img) { $img.Save('" . FilePath . "', [System.Drawing.Imaging.ImageFormat]::Png) }`""
+        RunWait(psScript,, "Hide")
     } catch {
         ToolTip()
-        MsgBox(16, "Error", "Failed to save image from clipboard!")
+        MsgBox(16, "Error", "Failed to save image from clipboard using PowerShell!")
         return
     }
     

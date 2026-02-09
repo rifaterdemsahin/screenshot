@@ -34,7 +34,8 @@ TempFilePath := TEMP_DIR . "\clipboard_image_" . FormatTime(A_Now, "yyyyMMddHHmm
 
 ShowStatus("Step 3: Saving Image", "Saving clipboard image to temporary file...")
 try {
-    A_Clipboard.Save(TempFilePath)
+    psScript := "powershell -NoProfile -Command `"Add-Type -AssemblyName System.Drawing; $img = Get-Clipboard -Format Image; if ($img) { $img.Save('" . TempFilePath . "', [System.Drawing.Imaging.ImageFormat]::Png) }`""
+    RunWait(psScript,, "Hide")
 } catch {
     MsgBox(16, "Error", "Failed to save image from clipboard!")
     ExitApp(1)
@@ -77,7 +78,7 @@ WaitForClipboardImage(timeout) {
     startTime := A_TickCount
     
     loop {
-        if (A_Clipboard.HasImage) {
+        if (DllCall("IsClipboardFormatAvailable", "UInt", 2)) {
             return true
         }
         
