@@ -41,7 +41,7 @@ if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
     # '{LEFTBRACKET}' is the SendKeys code for the '[' character.
     # Note: SendKeys can be unreliable and depends on Paint.NET being the active window and ready to receive input.
     Write-Host "Sending keystrokes '4', '0', '[' to Paint.NET..." -ForegroundColor DarkYellow
-    [System.Windows.Forms.SendKeys]::SendWait("40{LEFTBRACKET}")
+    [System.Windows.Forms.SendKeys]::SendWait("40{[}")
 
 } else {
     Write-Host "Error: Clipboard does not contain an image." -ForegroundColor Red
