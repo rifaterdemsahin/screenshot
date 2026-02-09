@@ -1,2 +1,0 @@
-# screenshot
-screenshot helper tools
