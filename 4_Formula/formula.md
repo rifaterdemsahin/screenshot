@@ -27,3 +27,17 @@ Research into popular desktop and online image editors has shown that this is ge
 ### Conclusion
 
 Directly launching a graphical image editor with pre-configured interactive tools (like a specific brush and color) is not a feasible goal for simple scripting. More complex solutions, such as fragile UI automation (simulating mouse clicks and keystrokes), would be required, and are not recommended for reliable automation.
+
+---
+
+## Install AutoHotkey with Winget
+
+AutoHotkey is a free, open-source custom scripting language for Microsoft Windows, allowing users to automate repetitive tasks. It's highly recommended for enhancing productivity, especially when combined with powerful text editors or other software.
+
+To install the latest stable version of AutoHotkey using Winget (Windows Package Manager), open a PowerShell or Command Prompt as an administrator and run the following command:
+
+```powershell
+winget install AutoHotkey.AutoHotkey --source winget
+```
+
+This command will download and install AutoHotkey to your system. After installation, you can verify by checking for `AutoHotkey.exe` in your `Program Files` directory or by running `autohotkey --version` in a new terminal.
