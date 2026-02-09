@@ -102,7 +102,7 @@ WaitForClipboardImage(timeout) {
 ; Open Paint.NET with image file
 OpenPaintNET(paintNetPath, imagePath) {
     try {
-        Run("""" . paintNetPath . """ """ . imagePath . """")
+        Run('"' . paintNetPath . '" "' . imagePath . '"')
     } catch as e {
         throw Error("Failed to open Paint.NET: " . e.Message)
     }

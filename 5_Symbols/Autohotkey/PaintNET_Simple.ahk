@@ -58,7 +58,7 @@ MainScript() {
     
     ; Step 4: Open Paint.NET
     ToolTip("Step 4: Opening Paint.NET...")
-    Run(PaintNetPath " " FilePath)
+    Run('"' . PaintNetPath . '" "' . FilePath . '"')
     Sleep(4000) ; Give Paint.NET time to open and load the image
     
     ; Step 5: Send keystrokes
