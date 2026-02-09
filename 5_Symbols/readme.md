@@ -38,5 +38,5 @@ The `capture.ps1` script is a PowerShell script designed to capture screenshots 
 ### Output
 
 The script will:
-*   Create a timestamped directory (e.g., `2026-02-09_09-58-50`) inside `C:\projects\screenshot\7_Testing\CapturedScreenshots`.
+*   Create a timestamped directory (e.g., `2026-02-09_09-58-50`) inside `C:\projects\screenshot\3_UI\CapturedScreenshots`.
 *   Save `screenshot_all.png` (a combined image of all monitors) and `screenshot_monitorN.png` (individual screenshots for each monitor) within this timestamped directory.

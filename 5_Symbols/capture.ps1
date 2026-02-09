@@ -2,7 +2,7 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 $timestamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
-$baseDir = 'C:\projects\screenshot\7_Testing\CapturedScreenshots'
+$baseDir = 'C:\projects\screenshot\3_UI\CapturedScreenshots'
 $dir = Join-Path $baseDir $timestamp
 
 # Create timestamped directory
