@@ -37,11 +37,12 @@ if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
     # Give Paint.NET some time to open and load the image
     Start-Sleep -Seconds 2 # Adjust this delay as needed
 
-    # Send keystrokes: '4', '0', and '['
-    # '{LEFTBRACKET}' is the SendKeys code for the '[' character.
+    # Send keystrokes: ']' 40 times, then 'X', and 'D'
+    # '{] 40}' is the SendKeys code for sending ']' 40 times.
+    # 'X' swaps foreground/background colors. 'D' resets colors to default.
     # Note: SendKeys can be unreliable and depends on Paint.NET being the active window and ready to receive input.
-    Write-Host "Sending keystrokes '4', '0', '[' to Paint.NET..." -ForegroundColor DarkYellow
-    [System.Windows.Forms.SendKeys]::SendWait("40{[}")
+    Write-Host "Sending keystrokes '] 40 times', 'X', 'D' to Paint.NET..." -ForegroundColor DarkYellow
+    [System.Windows.Forms.SendKeys]::SendWait("{] 40}XD")
 
 } else {
     Write-Host "Error: Clipboard does not contain an image." -ForegroundColor Red

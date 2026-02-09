@@ -82,7 +82,10 @@ The `open_paintnet_clipboard.ps1` script is a PowerShell script designed to chec
 
 ### Functionality
 
-Upon opening the image, the script will attempt to send the keystrokes '4', '0', and '[' to Paint.NET. These keystrokes are typically used to adjust brush size and potentially select a tool.
+Upon opening the image, the script will attempt to send the keystrokes ']' (40 times), 'X', and 'D' to Paint.NET.
+*   Sending ']' 40 times is intended to significantly increase the brush size.
+*   'X' is a common shortcut to swap the foreground and background colors.
+*   'D' is typically used to reset the foreground and background colors to their defaults (black and white).
 
 ### Prerequisites
 
