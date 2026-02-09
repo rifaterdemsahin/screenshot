@@ -114,3 +114,35 @@ Upon opening the image, the script will attempt to send the keystrokes ']' (40 t
 *   If Paint.NET is not found at the default path, you may need to edit the `$paintNetPath` variable within `open_paintnet_clipboard.ps1`.
 *   The script requires an image to be present in the clipboard to function.
 *   Temporary files are created in `%TEMP%\PaintNetClipboard` and are not automatically deleted by the script.
+
+---
+
+## How to Capture Screenshot and Open in Paint.NET
+
+The `screenshot_and_edit.ps1` script orchestrates the screenshot capture and subsequent opening of the captured image in Paint.NET. It first runs `capture.ps1` to take screenshots and copy the last one to the clipboard, then waits for a specified duration, and finally executes `open_paintnet_clipboard.ps1` to open the clipboard image in Paint.NET.
+
+### Prerequisites
+
+*   Windows Operating System
+*   PowerShell 5.1 or later
+*   Paint.NET installed (default path assumed: `C:\Program Files\Paint.NET\PaintDotNet.exe`)
+
+### Execution Steps
+
+1.  **Open PowerShell:** Open a PowerShell terminal.
+
+2.  **Navigate to the Script Directory:**
+    ```powershell
+    Set-Location -Path "C:\projects\screenshot\5_Symbols"
+    ```
+
+3.  **Run the Script:**
+    ```powershell
+    powershell -ExecutionPolicy Bypass -File .\screenshot_and_edit.ps1
+    ```
+
+### Notes
+
+*   This script is a convenience wrapper around `capture.ps1` and `open_paintnet_clipboard.ps1`. Ensure those scripts are correctly configured and functional.
+*   The script includes a 10-second delay between capturing and opening the image in Paint.NET to allow time for preparation.
+*   **Reliability:** The keystroke sending functionality within `open_paintnet_clipboard.ps1` remains subject to the same reliability concerns as documented in its own section.
